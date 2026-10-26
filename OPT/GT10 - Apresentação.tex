@@ -1,0 +1,463 @@
+% =============================================================================
+% GT10 - Modelagem Matemática (SBEM)
+% Compile com: pdflatex (2x)  ou  xelatex/lualatex (2x)
+% Arquivos opcionais na mesma pasta: brasao_uesc.png, Lilian.png, Michele.png
+% (se não existirem, aparece um quadro-reserva e o documento compila normalmente)
+% =============================================================================
+\documentclass[10pt, aspectratio=169]{beamer}
+
+\usepackage{iftex}
+\ifTUTeX
+  % --- XeLaTeX / LuaLaTeX ---
+  \usepackage{fontspec}
+  \IfFileExists{portuguese.ldf}{\usepackage[portuguese]{babel}}{\usepackage[portuguese, provide=*]{babel}}
+  \IfFontExistsTF{Noto Sans}{\setmainfont{Noto Sans}\setsansfont{Noto Sans}}{}
+\else
+  % --- pdfLaTeX ---
+  \usepackage[utf8]{inputenc}
+  \usepackage[T1]{fontenc}
+  \IfFileExists{portuguese.ldf}{\usepackage[portuguese]{babel}}{\usepackage[portuguese, provide=*]{babel}}
+  \usepackage{helvet}
+  \renewcommand{\familydefault}{\sfdefault}
+\fi
+
+\usepackage{booktabs}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+\usetheme{PaloAlto}
+\usecolortheme{whale}
+
+% Remove os ícones de navegação
+\setbeamertemplate{navigation symbols}{}
+% Efeito de sombra nos itens que ainda vão aparecer com \pause
+\setbeamercovered{transparent}
+
+%----------------------------------------------------------------------------
+% Imagem com quadro-reserva caso o arquivo não exista
+% \imgOuReserva{arquivo}{largura}{altura}{texto da reserva}
+%----------------------------------------------------------------------------
+\newcommand{\imgOuReserva}[4]{%
+  \IfFileExists{#1}{%
+    \includegraphics[width=#2,height=#3,keepaspectratio]{#1}%
+  }{%
+    \fbox{\parbox[c][#3][c]{#2}{\centering\scriptsize\textbf{#4}\\[2pt]\tiny(arquivo \texttt{#1} não encontrado)}}%
+  }%
+}
+
+%----------------------------------------------------------------------------
+% Brasão da UESC: o tema PaloAlto reserva um quadrado no topo da barra lateral
+% para o \logo; é o jeito nativo e estável de posicionar o brasão em todos os
+% slides (sem TikZ e sem mexer em comprimentos internos do Beamer).
+%----------------------------------------------------------------------------
+\newcommand{\uescLogo}{%
+  \IfFileExists{brasao_uesc.png}{%
+    \colorbox{white}{\includegraphics[width=1.1cm,height=1.1cm,keepaspectratio]{brasao_uesc.png}}%
+  }{%
+    \colorbox{white}{\parbox[c][1.0cm][c]{1.1cm}{\centering\tiny\textcolor{black}{\textbf{Brasão}\\\textbf{UESC}}}}%
+  }%
+}
+\logo{\uescLogo}
+
+%----------------------------------------------------------------------------
+% Metadados
+%----------------------------------------------------------------------------
+\title[GT10 - SBEM]{GT10 - Modelagem Matemática}
+\subtitle{Sociedade Brasileira de Educação Matemática (SBEM)}
+\author[José G. D. Silva]{José Guilherme Dantas Silva}
+\institute[UESC]{Universidade Estadual de Santa Cruz (UESC)}
+\date{29 de Outubro de 2026}
+
+\begin{document}
+
+%============================================================================
+% CAPA
+%============================================================================
+\begin{frame}
+    \transdissolve[duration=0.4]
+    \titlepage
+\end{frame}
+
+%============================================================================
+% SUMÁRIO
+%============================================================================
+\begin{frame}{Sumário da Apresentação}
+    \transboxin[duration=0.4]
+    \tableofcontents[pausesections]
+\end{frame}
+
+%============================================================================
+\section{Estrutura e Coordenação}
+%============================================================================
+
+%----------------------------------------------------------------------------
+% ESTRUTURA DO GT10
+%----------------------------------------------------------------------------
+\begin{frame}{Estrutura Administrativa e Contatos}
+    \transwipe[direction=0, duration=0.4]
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \begin{block}{Coordenação Atual}
+                \begin{itemize}
+                    \item \textbf{Coordenadora:} \\ Lilian Akemi Kato (UEM)
+                    \pause
+                    \item \textbf{Vice-Coordenadora:} \\ Michele Regiane Dias Veronez (UNESPAR)
+                \end{itemize}
+            \end{block}
+            \pause
+            \begin{alertblock}{Canais Oficiais}
+                \begin{itemize}
+                    \item \textbf{E-mail:} gt10sbem@gmail.com
+                    \item \textbf{Instagram:} @gt10.modelagem
+                \end{itemize}
+            \end{alertblock}
+        \end{column}
+        \begin{column}{0.48\textwidth}
+            \begin{exampleblock}{Comissão Científica do GT}
+                \begin{itemize}
+                    \item \textbf{Adriana Helena Borssoi} \\ (UTFPR)
+                    \item \textbf{Régis Forner} \\ (SEDUC/SP)
+                    \item \textbf{Claudia Carreira da Rosa} \\ (UFMS)
+                \end{itemize}
+            \end{exampleblock}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+%----------------------------------------------------------------------------
+% TOTAL DE MEMBROS
+%----------------------------------------------------------------------------
+\begin{frame}{Membros do GT10}
+    \transdissolve[duration=0.4]
+    \begin{columns}[c]
+        \begin{column}{0.36\textwidth}
+            \centering
+            \begin{tikzpicture}
+                \node[circle, fill=structure, text=white, minimum size=3.1cm,
+                      inner sep=0pt, align=center]
+                    {\fontsize{40}{44}\selectfont\bfseries 50\\[-2pt]
+                     \footnotesize membros};
+            \end{tikzpicture}
+        \end{column}
+        \begin{column}{0.60\textwidth}
+            \begin{block}{Composição (Relação de Membros no portal da SBEM)}
+                \begin{itemize}
+                    \item \textbf{50 membros} cadastrados, incluindo a coordenação e a comissão científica.
+                    \pause
+                    \item Vinculados a \textbf{27 instituições/redes} diferentes.
+                    \pause
+                    \item Maior representação: \textbf{UTFPR} (10 membros), seguida da \textbf{UEM} (4) e de \textbf{UEL}, \textbf{UFMS}, \textbf{UFRGS} e \textbf{UNESP} (3 cada).
+                \end{itemize}
+            \end{block}
+            {\tiny Fonte: página do GT10 no portal da SBEM (sbembrasil.org.br), consultada em 26/10/2026.}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+%----------------------------------------------------------------------------
+% COORDENADORA - PARTE 1
+%----------------------------------------------------------------------------
+\subsection[Coord.: L. A. Kato]{Coordenadora: Lilian Akemi Kato}
+\begin{frame}{Coordenadora: Profa. Dra. Lilian Akemi Kato}
+    \transblindsvertical[duration=0.4]
+    \footnotesize
+    \begin{columns}[c]
+        \begin{column}{0.65\textwidth}
+            \begin{block}{Formação Acadêmica}
+                \begin{itemize}
+                    \item \textbf{Graduação em Licenciatura em Matemática:} UEM (1992).
+                    \item \textbf{Mestrado em Matemática:} USP (1996).
+                    \item \textbf{Doutorado em Matemática Aplicada:} UNICAMP (2004).
+                    \item \textbf{Pós-Doutorado em Educação Matemática:} UNESP - Rio Claro (2015).
+                \end{itemize}
+            \end{block}
+            \pause
+            \begin{block}{Atuação Profissional Atual (UEM)}
+                \begin{itemize}
+                    \item Professora Associada no Departamento de Matemática.
+                    \item Docente no Programa de Pós-Graduação em Educação para a Ciência e a Matemática (PCM).
+                \end{itemize}
+            \end{block}
+        \end{column}
+        \begin{column}{0.31\textwidth}
+            \centering
+            \imgOuReserva{Lilian.png}{0.88\textwidth}{3.4cm}{Lilian.png}
+            \\[0.12cm]
+            {\scriptsize \textbf{Profa. Dra. Lilian Akemi Kato}}\\[0.04cm]
+            {\tiny \emph{Fonte: Currículo Lattes (CNPq)}}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+%----------------------------------------------------------------------------
+% COORDENADORA - PARTE 2
+%----------------------------------------------------------------------------
+\begin{frame}{Lilian Akemi Kato: Gestão e Pesquisa (UEM)}
+    \transdissolve[duration=0.4]
+    \footnotesize
+    \begin{block}{Cargos Administrativos Exercidos na UEM}
+        \begin{itemize}
+            \item \textbf{Chefe Adjunta do Depto. de Matemática:} jul/2008 a jun/2012.
+            \item \textbf{Coordenadora do Curso de Matemática:} jul/2012 a jun/2014.
+            \item \textbf{Coordenadora do PROINTE} (Integração Estudantil): mar/2015 a set/2020.
+            \item \textbf{Diretora do Centro de Ciências Exatas:} out/2020 a set/2024.
+        \end{itemize}
+    \end{block}
+    \pause
+    \begin{exampleblock}{Liderança Científica e Orientações}
+        \begin{itemize}
+            \item \textbf{Líder do GIEMEM:} Grupo Interdisciplinar de Estudos em Modelagem na Educação Matemática.
+            \item Orienta dissertações e teses em Modelagem na Educação Matemática, articulada à \textbf{Didática Francesa}, \textbf{Teoria Social da Aprendizagem}, \textbf{Aprendizagem Significativa} e \textbf{Formação de Professores}.
+        \end{itemize}
+    \end{exampleblock}
+\end{frame}
+
+%----------------------------------------------------------------------------
+% COORDENADORA - PARTE 3: TCC, DISSERTAÇÃO E TESE
+%----------------------------------------------------------------------------
+\begin{frame}{Lilian Akemi Kato: TCC, Dissertação e Tese}
+    \transwipe[direction=90, duration=0.4]
+    \footnotesize
+    \begin{block}{TCC / Graduação em Matemática (UEM, 1992)}
+        Título não localizado em fontes públicas.
+    \end{block}
+    \pause
+    \begin{exampleblock}{Dissertação de Mestrado em Matemática (ICMC-USP, São Carlos, 1996)}
+        \textbf{\emph{Uma generalização do teorema do toro de Alexander}} \\
+        Detalha o artigo ``A generalization of Alexander's torus theorem to higher dimensions'' (Notas do ICMSC-USP, n.\,28). \\
+        \emph{Orientador:} Hermínio Cassago Junior. \emph{Defesa:} 26/04/1996.
+    \end{exampleblock}
+    \pause
+    \begin{alertblock}{Tese de Doutorado em Matemática Aplicada (UNICAMP, 2004)}
+        \textbf{\emph{Modelos matemáticos de dispersão em múltiplas escalas e um estudo da propagação de lesões foliares em grandes plantações}} \\
+        \emph{Orientador:} Wilson Castro Ferreira Junior.
+    \end{alertblock}
+\end{frame}
+
+%----------------------------------------------------------------------------
+% VICE-COORDENADORA - PARTE 1
+%----------------------------------------------------------------------------
+\subsection[Vice: M. R. D. Veronez]{Vice-Coordenadora: Michele Regiane Dias Veronez}
+\begin{frame}{Vice-Coordenadora: Profa. Dra. Michele Regiane Dias Veronez}
+    \transblindshorizontal[duration=0.4]
+    \footnotesize
+    \begin{columns}[c]
+        \begin{column}{0.65\textwidth}
+            \begin{block}{Formação Acadêmica}
+                \begin{itemize}
+                    \item \textbf{Licenciatura em Matemática:} UEL (2002).
+                    \item \textbf{Mestrado (2005):} Ensino de Ciências e Educação Matemática (UEL).
+                    \item \textbf{Doutorado (2013):} Ensino de Ciências e Educação Matemática (UEL).
+                \end{itemize}
+            \end{block}
+            \pause
+            \begin{block}{Trajetória Docente}
+                \begin{itemize}
+                    \item Atua no Ensino Superior desde 2004 e na \textbf{UNESPAR} desde 2006.
+                    \item Professora no Programa de Pós-Graduação em Educação Matemática (\textbf{PRPGEM}).
+                \end{itemize}
+            \end{block}
+        \end{column}
+        \begin{column}{0.31\textwidth}
+            \centering
+            \imgOuReserva{Michele.png}{0.88\textwidth}{3.4cm}{Michele.png}
+            \\[0.12cm]
+            {\scriptsize \textbf{Profa. Dra. Michele Regiane Dias Veronez}}\\[0.04cm]
+            {\tiny \emph{Fonte: Currículo Lattes (CNPq)}}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+%----------------------------------------------------------------------------
+% VICE-COORDENADORA - PARTE 2
+%----------------------------------------------------------------------------
+\begin{frame}{Michele Regiane Dias Veronez: Pesquisa e Representação}
+    \transdissolve[duration=0.4]
+    \footnotesize
+    \begin{exampleblock}{Liderança e Atuação Editorial}
+        \begin{itemize}
+            \item \textbf{Líder do GEPMEM:} Grupo de Estudos sobre Práticas de Modelagem em Educação Matemática (UNESPAR).
+            \item \textbf{Conselho Editorial:} Membro na \emph{Revista Ensino e Pesquisa} e na \emph{Revista Paranaense de Educação Matemática}.
+            \item \textbf{Representação Institucional:} Membro da SBEM com participação ativa no \textbf{GT10 - Modelagem Matemática}.
+        \end{itemize}
+    \end{exampleblock}
+    \pause
+    \begin{block}{Orientações e Áreas de Interesse}
+        \begin{itemize}
+            \item Orienta pesquisas que focalizam aspectos da Modelagem Matemática e da formação de professores que ensinam Matemática.
+            \item \textbf{Áreas de interesse:} Modelagem Matemática, Formação de Professores, Ensino e Aprendizagem em Matemática.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+%----------------------------------------------------------------------------
+% VICE-COORDENADORA - PARTE 3: TCC, DISSERTAÇÃO E TESE
+%----------------------------------------------------------------------------
+\begin{frame}{Michele Regiane Dias Veronez: TCC, Dissertação e Tese}
+    \transwipe[direction=90, duration=0.4]
+    \footnotesize
+    \begin{block}{TCC / Licenciatura em Matemática (UEL, 2002)}
+        Título não localizado em fontes públicas (consultar o Currículo Lattes).
+    \end{block}
+    \pause
+    \begin{exampleblock}{Dissertação de Mestrado em Ensino de Ciências e Educação Matemática (UEL, 2005)}
+        \textbf{\emph{Uma experiência com Modelagem Matemática na formação continuada de professores}} \\
+        \emph{Orientadora:} Lourdes Maria Werle de Almeida.
+    \end{exampleblock}
+    \pause
+    \begin{alertblock}{Tese de Doutorado em Ensino de Ciências e Educação Matemática (UEL, 2013)}
+        \textbf{\emph{As funções dos signos em atividades de modelagem matemática}} \\
+        Investiga, pela semiótica peirceana, como atividades de modelagem de licenciandos se relacionam com as funções dos signos. \\
+        \emph{Orientadora:} Lourdes Maria Werle de Almeida.
+    \end{alertblock}
+\end{frame}
+
+%============================================================================
+\section{Histórico, Foco e Objetivos}
+%============================================================================
+
+\begin{frame}{Histórico e Missão Institucional}
+    \transsplitverticalin[duration=0.4]
+    \begin{block}{Origem do Grupo (2001)}
+        \begin{itemize}
+            \item Criado pela \textbf{Sociedade Brasileira de Educação Matemática (SBEM)} em 2001.
+            \pause
+            \item Fruto da política institucional para que os grupos de pesquisa assumissem o papel de articulação e colaboração entre pesquisadores brasileiros.
+            \pause
+            \item Sendo o décimo núcleo estabelecido pela SBEM, recebeu a designação formal de \textbf{GT10}.
+        \end{itemize}
+    \end{block}
+    \pause
+    \begin{alertblock}{Missão Central}
+        Favorecer o debate e a cooperação entre pesquisadores de todo o país que investigam a \textbf{Modelagem Matemática} na perspectiva da Educação Matemática, fortalecendo essa frente no cenário nacional.
+    \end{alertblock}
+\end{frame}
+
+\begin{frame}{Focos de Investigação e Interseções}
+    \transwipe[direction=90, duration=0.4]
+    \begin{block}{Abrangência de Atuação}
+        Investigações aprofundadas sobre Modelagem Matemática sob a ótica da Educação Matemática em diferentes níveis e modalidades:
+        \begin{itemize}
+            \item Educação Básica;
+            \item Ensino Superior;
+            \item Pós-Graduação.
+        \end{itemize}
+    \end{block}
+    \pause
+    \begin{exampleblock}{Diálogos com Outras Tendências Metodológicas}
+        \begin{itemize}
+            \item Tecnologias da Informação e Comunicação (TIC);
+            \pause
+            \item Etnomatemática;
+            \pause
+            \item Formação de Professores e outras abordagens que enriquecem o ensino e a aprendizagem.
+        \end{itemize}
+    \end{exampleblock}
+\end{frame}
+
+%============================================================================
+\section{Dinâmica de Trabalho e Eventos}
+%============================================================================
+
+\begin{frame}{Encontros Científicos e Gestão Democrática}
+    \transboxout[duration=0.4]
+    \begin{block}{Espaços Acadêmicos Estratégicos}
+        \begin{itemize}
+            \item \textbf{SIPEM (Trienal):} Espaço reservado nos Seminários Internacionais de Pesquisa em Educação Matemática para avaliação e discussão de pesquisas.
+            \pause
+            \item \textbf{CNMEM (Bienal):} Atuação decisiva na organização das Conferências Nacionais sobre Modelagem na Educação Matemática.
+            \pause
+            \item \textbf{ENEM:} Participação assídua no Encontro Nacional de Educação Matemática.
+        \end{itemize}
+    \end{block}
+    \pause
+    \begin{exampleblock}{Gestão Horizontal e Compartilhada}
+        \begin{itemize}
+            \item Eleição democrática durante o SIPEM (1 coordenador e 2 suplentes).
+            \item Na prática organizacional, a liderança é exercida de forma \textbf{plenamente compartilhada}, respeitando a pluralidade de visões.
+        \end{itemize}
+    \end{exampleblock}
+\end{frame}
+
+%============================================================================
+\section{Análise de Produção Científica}
+%============================================================================
+
+\subsection[Artigo (SIPEM 2024)]{O Artigo Selecionado (SIPEM 2024)}
+\begin{frame}{Análise de Produção Científica: Artigo Escolhido}
+    \transdissolve[duration=0.4]
+    \begin{block}{Ficha Técnica da Publicação}
+        \begin{itemize}
+            \item \textbf{Título:} \emph{Aprendizagem e modos de fazer em atividades de modelagem matemática: propondo uma articulação}
+            \item \textbf{Autores:} Lourdes Maria Werle de Almeida e Jeferson Takeo Padoan Seki
+            \item \textbf{Evento:} IX Seminário Internacional de Pesquisa em Educação Matemática (SIPEM), 2024.
+            \item \textbf{Acesso:} \url{https://www.sbembrasil.org.br/eventos/index.php/sipem/article/view/454}
+        \end{itemize}
+    \end{block}
+    \pause
+    \begin{alertblock}{Foco Primordial do Estudo}
+        Compreender como as ações, escolhas heurísticas, estratégias e impasses enfrentados pelos alunos perante situações-problema reais atuam como motor para a construção do conhecimento matemático.
+    \end{alertblock}
+\end{frame}
+
+\subsection[Resultados]{Resultados e Papel do Professor}
+\begin{frame}{Natureza da Aprendizagem e Validação de Modelos}
+    \transglitter[direction=0, duration=0.4]
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \begin{block}{Aprendizagem Orgânica}
+                \begin{itemize}
+                    \item Não se reduz à memorização passiva ou isolada de fórmulas.
+                    \pause
+                    \item Conecta-se ao próprio \textbf{ato de modelar}: simplificar dados, formular hipóteses, isolar variáveis e matematizar.
+                \end{itemize}
+            \end{block}
+        \end{column}
+        \begin{column}{0.48\textwidth}
+            \begin{exampleblock}{Ciclos de Tentativa e Erro}
+                \begin{itemize}
+                    \item Tentativa, erro, análise e validação são indispensáveis ao amadurecimento cognitivo.
+                    \pause
+                    \item O \textbf{conflito cognitivo} ao reajustar uma equação provisória gera apropriação profunda dos conceitos.
+                \end{itemize}
+            \end{exampleblock}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Mediação Docente e Conclusões do Estudo}
+    \transsplithorizontalout[duration=0.4]
+    \begin{block}{O Papel do Docente como Mediador}
+        \begin{itemize}
+            \item Afasta-se da postura de ``entregador de respostas prontas''.
+            \pause
+            \item Atua como \textbf{provocador de reflexões}, desafiando as equipes sem retirar a autonomia intelectual dos estudantes.
+            \pause
+            \item Acompanha o raciocínio incerto dos alunos em vez de exigir caminhos previamente mapeados.
+        \end{itemize}
+    \end{block}
+    \pause
+    \begin{alertblock}{Conclusão e Alinhamento com o GT10}
+        A articulação entre o investigar (\emph{o fazer}) e o currículo transforma a relação de saber em sala de aula, formando estudantes críticos, colaborativos e independentes --- exemplificando a Modelagem como filosofia de educação e inclusão.
+    \end{alertblock}
+\end{frame}
+
+%============================================================================
+% ENCERRAMENTO
+%============================================================================
+\begin{frame}{Referências e Contatos}
+    \transdissolve[duration=0.5]
+    \centering
+    {\Large \textbf{Obrigado pela atenção!}} \\[0.6cm]
+    \normalsize
+    \begin{tabular}{ll}
+        \toprule
+        \textbf{Grupo de Trabalho} & GT10 - Modelagem Matemática (SBEM) \\
+        \textbf{Autor da Síntese} & José Guilherme Dantas Silva (UESC) \\
+        \textbf{E-mail do GT10} & \texttt{gt10sbem@gmail.com} \\
+        \textbf{Instagram} & \texttt{@gt10.modelagem} \\
+        \bottomrule
+    \end{tabular}
+\end{frame}
+
+\end{document}
